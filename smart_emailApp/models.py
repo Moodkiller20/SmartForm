@@ -84,15 +84,18 @@ class EmailTask(models.Model):
     priority = models.CharField(max_length=50, choices=priority_level, null=True, blank=True)
     error_message = models.TextField(null=True, blank=True)
 
+    last_sent_date = models.DateField(null=True, blank=True)
+
     updated_at = models.DateField(auto_now=True, null=True, blank=True)
 
     def __str__(self):
         return f'{self.task_name} || {self.task_occurence} || {self.status}'
 
 
+
 class MyJobModel(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
-    job_id = models.CharField(max_length=255)
+
     decription = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateField(auto_now=True, null=True, blank=True)
@@ -101,6 +104,19 @@ class MyJobModel(models.Model):
 
     def __str__(self):
         return self.name
+
+class ErrorReport(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    decription = models.CharField(max_length=450, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateField(auto_now=True, null=True, blank=True)
+
+    # Add any other fields you need to store information about the job
+
+    def __str__(self):
+        return self.name
+
+
 
 
 class Link(models.Model):
