@@ -4,13 +4,15 @@ from django.shortcuts import render, redirect
 
 
 from scheduler.send_email import welcome_email
-from scheduler.tasks_scheduler import task_send_welcome_email
 from smart_emailApp.models import MyJobModel, ErrorReport
 from .forms import *
 from .models import User
 
 
-now = datetime.datetime.now()
+from datetime import datetime
+
+now = datetime.now()
+
 
 def user_form(request):
     if request.method == 'POST':

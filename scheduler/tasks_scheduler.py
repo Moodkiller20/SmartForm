@@ -17,39 +17,39 @@
 #     my_job = MyJobModel(name=job.name, job_id=job.id)
 #     my_job.save()
 #     print("Task saved")
-
-def task_send_welcome_email(email, first_name, last_name, task_name):
-    from apscheduler.schedulers.background import BackgroundScheduler
-    from django_apscheduler.jobstores import register_events, DjangoJobStore
-
-    scheduler = BackgroundScheduler()
-    scheduler.add_jobstore(DjangoJobStore(), "default")
-
-    try:
-        # Schedule the job to run 1 second from now
-        run_time = datetime.now() + timedelta(seconds=30)
-        print("Adding job to scheduler ######## ############ ############### ############ ############ #### ")
-
-        job = scheduler.add_job(
-            welcome_email,
-            'date',
-            run_date=run_time,
-            args=[email, first_name, last_name],
-            name=task_name,
-        )
-        if job:
-            update_model(job)
-            register_events(scheduler)
-            scheduler.start()
-            print("Task scheduled: ", job.id)
-            return job
-        else:
-            print("Job creation failed")
-            return False
-
-    except Exception as e:
-        print("Error occurred: ", traceback.format_exc())
-        return False
+#
+# def task_send_welcome_email(email, first_name, last_name, task_name):
+#     from apscheduler.schedulers.background import BackgroundScheduler
+#     from django_apscheduler.jobstores import register_events, DjangoJobStore
+#
+#     scheduler = BackgroundScheduler()
+#     scheduler.add_jobstore(DjangoJobStore(), "default")
+#
+#     try:
+#         # Schedule the job to run 1 second from now
+#         run_time = datetime.now() + timedelta(seconds=30)
+#         print("Adding job to scheduler ######## ############ ############### ############ ############ #### ")
+#
+#         job = scheduler.add_job(
+#             welcome_email,
+#             'date',
+#             run_date=run_time,
+#             args=[email, first_name, last_name],
+#             name=task_name,
+#         )
+#         if job:
+#             update_model(job)
+#             register_events(scheduler)
+#             scheduler.start()
+#             print("Task scheduled: ", job.id)
+#             return job
+#         else:
+#             print("Job creation failed")
+#             return False
+#
+#     except Exception as e:
+#         print("Error occurred: ", traceback.format_exc())
+#         return False
 
 #
 # def task_one_send_email(email, task_name):
