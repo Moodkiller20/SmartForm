@@ -59,9 +59,10 @@ def user_created(request):
 def unsubscribe(request):
     email = request.GET.get('user-email') or ''
     user = User.objects.filter(email=email)
-    user.update(subscribe_to_newsletter=False)
-    user.save()
+    user = user.update(subscribe_to_newsletter=False)
+    context = {'message': ''}
+    if user:
+        context = {'message': f'{email} was unsubscribed form our emailing list'}
 
-    print(email)
-    # context = {'tasks': tasks}
-    return render(request, 'smartform/unsubscribe_form.html')
+
+    return render(request, 'smartform/unsubscribe_form.html',context)
