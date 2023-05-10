@@ -91,8 +91,8 @@ def buildEmail(email_task_id,email_id):
         template_name = "onsales.html"
     elif email_s.emailtype == "Seasonal Sales":
         context = {
-            'receiver': "ELG-Fireamrs Member",
-            'emails': email_s,
+            'receiver': "ELG-Firearms Member",
+            'emsails': email_s,
         }
         template_name = "season_specials.html"
     else:
