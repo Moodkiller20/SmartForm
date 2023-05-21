@@ -38,7 +38,7 @@ def user_form(request):
                     return redirect('user_created')
                 else:
                     print("Email was not sent")
-                    err = ErrorReport(name = "Email Not Sent", decription= f"New User email failed to send for user {user.email} {user.first_name} at {now()}")
+                    err = ErrorReport(name = "Email Not Sent", decription= f"New User email failed to send for user {user.email} {user.first_name} at {now}")
                     err.save()
     else:
         form = UserForm()
