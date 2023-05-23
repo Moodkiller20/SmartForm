@@ -18,7 +18,7 @@ def login_view(request):
             return redirect('master_home')
         else:
 
-            messages.success(request, ("There was an error loging you in"))
+
             return redirect('login')
 
     else:
