@@ -10,6 +10,8 @@ urlpatterns = [
                   path('view_members', views.member_view, name='view_members'),
                   path('edit_user/<int:user_id>/', views.edit_user, name='edit_user'),
                   path('delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
+                  path('upload_view', views.upload_view, name='upload_view'),
+                  path('export_users/', views.export_users_to_excel, name='export_users'),
 
                   path('view_emails', views.email_view, name='view_emails'),
                   path('create_email', views.create_email, name='create_email'),
@@ -27,7 +29,7 @@ urlpatterns = [
                   path('view_task_detail/<int:id>', views.task_detail, name='view_task_detail'),
                   path('delete_task/<int:id>', views.delete_task, name='delete_task'),
 
-                    # count email links views
+                  # count email links views
                   path('master/link_clicked/<str:link_name>/<str:link_subject>/<path:link_url>/', views.link_clicked, name='link_clicked'),
                   path('product_stats', views.product_view, name='product_stats'),
                   path('search_product', views.product_search, name='search_product'),

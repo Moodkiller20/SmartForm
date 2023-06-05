@@ -1,0 +1,78 @@
+{% extends "nav.html" %}
+{% load static %}
+
+{% block navbar %}
+
+    <div class="container mt-3">
+        {% if submitted == True %}
+            <div class="row mb-3">
+                <div class="col-10">
+                    {% if user_data > 0 %}
+                        <h3>Recently uploaded Member List</h3>
+                        <p class="fw-bold text-success">File uploaded and processed successfully!  {{ user_data|length }} new records were added</p>
+                    {% else %}
+                        <h3>Recently uploaded Member List</h3>
+                        <p class="fw-bold text-warning">File uploaded and processed successfully!  {{ user_data|length }} records were added</p>
+                        <p class="fw-bold text-warning">This is maybe because user already exist</p>
+                    {% endif %}
+                </div>
+
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    {#                    <th>Email Agreements</th>#}
+                    <th>Subscribe to Newsletter</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in user_data %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.email }}</td>
+                        {#                        <td>{{ user.email_agreements }}</td>#}
+                        <td>{{ user.subscribe_to_newsletter }}</td>
+                        <td>
+                            <a href="{% url 'edit_user' user.id %}" class="btn btn-primary">Edit</a>
+                            <a href="{% url 'delete_user' user.id %}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7">No users found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="row">
+                <div class="col-4">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Default file input example</label>
+                            <input class="form-control" type="file" name="file"  id="formFile">
+                        </div>
+
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary mb-3">Upload</button>
+                        </div>
+
+                    </form>
+                </div>
+
+
+            </div>
+
+
+        {% endif %}
+    </div>
+
+{% endblock %}

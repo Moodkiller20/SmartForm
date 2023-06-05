@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, timezone
+from io import BytesIO
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -54,7 +55,8 @@ def home_view(request):
 def member_view(request):
     limit = 100
     users = User.objects.all()[:limit]
-    return render(request, 'smartemail/member_view.html', {'users': users})
+    number_of_users = User.objects.all().count()
+    return render(request, 'smartemail/member_view.html', {'users': users,'number_of_users':number_of_users})
 
 @login_required(login_url='login')
 def edit_user(request, user_id):
@@ -379,3 +381,69 @@ def product_search(request):
 
     context = {'products': products}
     return render(request, 'smartemail/products_views.html', context)
+
+def upload_view(request):
+    submitted = False
+    user_data = []
+    existing_user =None
+
+    if request.method == 'POST':
+        file = request.FILES['file']
+
+        if file.name.endswith('.xls') or file.name.endswith('.xlsx'):
+            df = pd.read_excel(file)
+            for _, row in df.iterrows():
+                email = row['email']
+                # Check if a user with the same email already exists
+                existing_user = User.objects.filter(email=email)
+                if not existing_user:
+                    user = User(
+                        first_name=row['first_name'],
+                        last_name=row['last_name'],
+                        email=email,
+                        email_agreements=row['email_agreements'],
+                        subscribe_to_newsletter=row['subscribe_to_newsletter'],
+                    )
+                    user.save()
+                    user_data.append(user)
+            submitted = True
+            return render(request, 'smartemail/upload_member.html', {'submitted': submitted, 'user_data': user_data,"existing_user":existing_user.count()})
+        else:
+            submitted = False
+    return render(request, 'smartemail/upload_member.html', {'submitted': submitted,})
+
+import pandas as pd
+from django.http import HttpResponse
+
+def export_users_to_excel(request):
+    # Retrieve all User records
+    users = User.objects.all()
+
+    # Create a pandas DataFrame from the User records
+    data = {
+        'First Name': [user.first_name for user in users],
+        'Last Name': [user.last_name for user in users],
+        'Email': [user.email for user in users],
+        'Email Agreements': [user.email_agreements for user in users],
+        'Subscribe to Newsletter': [user.subscribe_to_newsletter for user in users],
+        'Created At': [user.created_at.replace(tzinfo=None) for user in users],
+    }
+    df = pd.DataFrame(data)
+
+    # Create a BytesIO object to store the Excel file
+    excel_file = BytesIO()
+
+    # Export the DataFrame to an Excel file
+    df.to_excel(excel_file, index=False)
+    excel_file.seek(0)
+
+    # Set the appropriate response headers for Excel file download
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename="users.xlsx"'
+
+    # Write the Excel file content to the response
+    response.write(excel_file.getvalue())
+
+    return response

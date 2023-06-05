@@ -66,3 +66,4 @@ def unsubscribe(request):
 
 
     return render(request, 'smartform/unsubscribe_form.html',context)
+
