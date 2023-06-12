@@ -1,19 +1,12 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from io import BytesIO
 from django.contrib.auth.decorators import login_required
-from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template.loader import render_to_string
-from django.urls import reverse
-from django.utils.html import strip_tags
-from django.contrib.sites.shortcuts import get_current_site
+
 from SmartForm import settings
-from scheduler.send_email import buildEmail, send_email_with_picture
 from smart_emailApp.forms import *
-from smart_formApp.forms import UserForm
 from smart_formApp.models import User
 from smart_emailApp.models import *
-from django.core.files.storage import default_storage
 
 
 @login_required(login_url='login')
