@@ -1,12 +1,10 @@
 import os
 import django
-from django.db.models.signals import post_save
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "SmartForm.settings")
 
 # initialize Django
 django.setup()
-from django.dispatch import receiver
 
 from django.db.models import Q
 # import your Django models and components here
