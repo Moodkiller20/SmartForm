@@ -46,7 +46,6 @@ class Emails(models.Model):
         # save to database
         super(Emails, self).save(*args, **kwargs)
 
-
 class EmailTask(models.Model):
     task_type = (
         ('Once', 'Once'),
@@ -91,8 +90,6 @@ class EmailTask(models.Model):
     def __str__(self):
         return f'{self.task_name} || {self.task_occurence} || {self.status}'
 
-
-
 class MyJobModel(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
 
@@ -116,9 +113,6 @@ class ErrorReport(models.Model):
     def __str__(self):
         return self.name
 
-
-
-
 class Link(models.Model):
     name = models.CharField(max_length=255)
     subject = models.CharField(max_length=255)
@@ -137,3 +131,9 @@ class Link(models.Model):
 
     def __str__(self):
         return f'Product name: {self.name} || {self.url} || views:  {self.views} '
+
+class Assets(models.Model):
+    image_asset = models.ImageField(upload_to="email_assets/images/", null=True, blank=True, default=None)
+    asset_name = models.CharField(max_length=60, null=True, blank=True)
+    def __str__(self):
+        return self.asset_name
