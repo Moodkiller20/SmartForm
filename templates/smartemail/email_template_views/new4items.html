@@ -5,12 +5,9 @@
     <title>ELG-Firearms Smart Form</title>
     <style>
         body {
-            font-family: 'Roboto, Sans-serif';
+            font-family: 'Roboto, Sans-serif', serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to bottom, white, orangered) !important;
-
-
         }
         .container {
             max-width: 100%;
@@ -50,6 +47,12 @@
             display: flex;
             justify-content: center;
             margin-top: 2rem;
+        }
+        .col-2 {
+            width: 50% !important;
+            float: left;
+            box-sizing: border-box;
+            padding: 10px;
         }
         .card {
             width: 15rem;
@@ -121,7 +124,7 @@
 
         <div class="row">
             <div class="col-8 mx-auto align-items-center">
-                <img class="img-fluid" src="{{ email_head }}"  alt="ELG-Firearms Header">
+                <img class="img-fluid" src="{{ email_head.url }}"  alt="ELG-Firearms Header">
 
                 <h3 class="text-center">{{ emails.subject}}</h3>
                 <hr class="new4">

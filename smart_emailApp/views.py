@@ -2,24 +2,18 @@ from datetime import datetime, timedelta
 from io import BytesIO
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.db.models import Sum
+from django.db.models import Q
 from SmartForm import settings
+from scheduler.send_email import buildEmail
 from smart_emailApp.forms import *
 from smart_formApp.models import User
 from smart_emailApp.models import *
 
-
 @login_required(login_url='login')
 
-
 def home_view(request):
-
-    # buildEmail(1,1)
-
-
-    from django.db.models import Sum
-    from django.db.models import Q
-
+    #buildEmail(1,1)
     members_count = User.objects.count()
     today = datetime.today()
     seven_days_ago = today - timedelta(days=7)
@@ -52,13 +46,11 @@ def home_view(request):
 
     return render(request, "smartemail/master_home.html", context)
 
-
 def member_view(request):
     limit = 100
     users = User.objects.all()[:limit]
     number_of_users = User.objects.all().count()
     return render(request, 'smartemail/member_view.html', {'users': users,'number_of_users':number_of_users})
-
 @login_required(login_url='login')
 def edit_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
@@ -104,7 +96,7 @@ def create_email(request):
                 instance.image = image
             instance.save()
             form.save_m2m()
-            return redirect('master_home')
+            return redirect('view_emails')
     else:
         form = CreateEmailForm()
 
@@ -229,22 +221,46 @@ def email_view(request):
     return render(request, "smartemail/emails.html", context)
 
 @login_required(login_url='login')
+
 def email_template_view(request, id):
+
+    from urllib.parse import urlparse
+
+    current_url = request.build_absolute_uri()
+    parsed_url = urlparse(current_url)
+    domain_name = parsed_url.netloc
+    
     emails = Emails.objects.get(id=id)
+    email_assets = Assets.objects.all()
+    
+    email_head = email_assets.get(asset_name="ELG_Header").image_asset
+    email_signature = email_assets.get(asset_name="Email_signature").image_asset
+
+    email_head = f"http://{domain_name}/media/{email_head}"
+    email_signature = f"http://{domain_name}/media/{email_signature}"
+    
+    
     print(emails)
     context = {}
     template_name = None
+
+
     if emails.emailtype == "Store News":
-        context = {'receiver': "ELG-Firearms Member",
-                   'emails': emails}
-        template_name = "storenewsAttach.html"
+        context = {
+            'receiver': "ELG-Firearms Member",
+            'emails': emails,
+            'email_head':email_head,
+            'email_signature':email_signature,
+        }
+        template_name = "storesnews.html"
 
     elif emails.emailtype == "Promotional":
-
         context = {'receiver': "ELG-Firearms Member",
-                   "emails": emails
+                   "emails": emails,
+                   'email_head': email_head,
+                   'email_signature': email_signature,
                    }
-        template_name = "onsalesAttach.html"
+        template_name = "new4items.html"
 
     elif emails.emailtype == "Seasonal Sales":
         context = {
@@ -310,7 +326,6 @@ def delete_email(request, id):
     }
 
     return render(request, 'smartemail/confirm_delete.html', context)
-
 @login_required(login_url='login')
 def task_view(request):
     tasks = EmailTask.objects.all()
@@ -328,10 +343,6 @@ def task_search(request):
     print(tasks)
     context = {'tasks': tasks}
     return render(request, 'smartemail/tasks.html', context)
-
-@login_required(login_url='login')
-def task_detail(request, id):
-    return None
 
 @login_required(login_url='login')
 def delete_task(request, id):
@@ -448,3 +459,7 @@ def export_users_to_excel(request):
     response.write(excel_file.getvalue())
 
     return response
+
+
+def task_detail(request):
+    return None
