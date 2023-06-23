@@ -133,7 +133,7 @@
 
         <div class="row">
             <div class="col-2 mx-auto align-items-center ">
-                <p class="text-center">{{ emails.body }}</p>
+                <p class="text-center">{{ emails.body |safe }}</p>
             </div>
         </div>
 
@@ -142,8 +142,8 @@
                 <div class="card">
                     <img src="{{ picture_urls.0}}">
                     <div class="card-body">
-                        <h5 class="card-title">{{ emails.product1_name }}</h5>
-                        <p class="card-text">{{ emails.product1_description }}</p>
+                        <h5 class="card-title">{{ emails.product1_name |safe}}</h5>
+                        <p class="card-text">{{ emails.product1_description|safe}}</p>
                         <a href="{{ emails.product1_link }}" class="btn">Buy</a>
                     </div>
                 </div>
@@ -153,8 +153,8 @@
                 <div class="card">
                     <img src="{{ picture_urls.1}}">
                     <div class="card-body">
-                        <h5 class="card-title">{{ emails.product2_name }}</h5>
-                        <p class="card-text">{{ emails.product2_description }}</p>
+                        <h5 class="card-title">{{ emails.product2_name |safe}}</h5>
+                        <p class="card-text">{{ emails.product2_description |safe }}</p>
                         <a href="{{ emails.product2_link }}" class="btn">Buy</a>
                     </div>
                 </div>
@@ -164,8 +164,8 @@
                 <div class="card">
                     <img src="{{ picture_urls.2}}">
                     <div class="card-body">
-                        <h5 class="card-title">{{ emails.product3_name }}</h5>
-                        <p class="card-text">{{ emails.product3_description }}</p>
+                        <h5 class="card-title">{{ emails.product3_name |safe}}</h5>
+                        <p class="card-text">{{ emails.product3_description |safe}}</p>
                         <a href="{{ emails.product3_link }}" class="btn">Buy</a>
                     </div>
                 </div>
@@ -175,8 +175,8 @@
                 <div class="card">
                     <img src="{{ ppicture_urls.3 }}">
                     <div class="card-body">
-                        <h5 class="card-title">{{ emails.product4_name }}</h5>
-                        <p class="card-text">{{ emails.product4_description }}</p>
+                        <h5 class="card-title">{{ emails.product4_name |safe }}</h5>
+                        <p class="card-text">{{ emails.product4_description |safe }}</p>
                         <a href="{{ emails.product4_link }}" class="btn">Buy</a>
                     </div>
                 </div>

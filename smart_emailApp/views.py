@@ -13,7 +13,7 @@ from smart_emailApp.models import *
 @login_required(login_url='login')
 
 def home_view(request):
-    #buildEmail(1,1)
+    buildEmail(15,15)
     members_count = User.objects.count()
     today = datetime.today()
     seven_days_ago = today - timedelta(days=7)
@@ -134,7 +134,7 @@ def create_task(request):
 
             instance.save()
 
-            return redirect('master_home')
+            return redirect('view_task')
 
             # Process the email task here
     else:
@@ -173,7 +173,7 @@ def edit_task(request, id):
             intance.recipients = members_list
 
         intance.save()
-        return redirect('master_home')
+        return redirect('view_tasks')
         # Process the email task here
 
     list_info = [
