@@ -55,7 +55,7 @@
 
                                 
                                 </h5>
-                            <p class="card-text text-black">{{ task.task_description}}</p>
+                            <p class="card-text text-black">{{ task.task_description |safe}}</p>
                             <p>Occurrence: <span class="card-text text-black fw-bolder">{{ task.task_occurence}}</span> </p>
 {#                            <p>Recipients: <span class="card-text text-black fw-bolder">{{ task.recipients}}</span> </p>#}
                             <p>Email to send: <span class="card-text text-black fw-bolder">{{ task.emailToSend}}</span> </p>

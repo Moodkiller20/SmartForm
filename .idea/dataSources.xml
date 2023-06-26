@@ -22,11 +22,11 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name=".sqlite3" uuid="f347d4e9-88b4-4be4-93d9-b335813670c6">
+    <data-source source="LOCAL" name="db" uuid="fe6885f7-3281-4cd9-8bc9-c3a40e6cdda5">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\giova\PycharmProjects\SmartForm-1\.sqlite3</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\giova\PycharmProjects\SmartForm-1\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>
