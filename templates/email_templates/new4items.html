@@ -5,10 +5,10 @@
     <title>ELG-Firearms Smart Form</title>
     <style>
         body {
-            font-family: 'Roboto, Sans-serif';
+            font-family: 'Roboto, Sans-serif', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to bottom, white, orangered) !important;
+            background: rgba(188,186,190,255)!important;
 
 
         }
@@ -48,7 +48,7 @@
         }
         .row {
             display: flex;
-            justify-content: center;
+            {#justify-content: center;#}
             margin-top: 2rem;
         }
         .card {
@@ -91,7 +91,7 @@
             clear: both;
         }
         p {
-            text-align: center;
+            {#text-align: center;#}
         }
         .text-center {
             text-align: center !important;
@@ -129,8 +129,8 @@
         </div>
 
         <div class="row">
-            <div class="col-2 mx-auto align-items-center ">
-                <p class="text-center">{{ emails.body |safe }}</p>
+            <div class="col-2 ">
+                <p class="">{{ emails.body |safe }}</p>
             </div>
         </div>
 
