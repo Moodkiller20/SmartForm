@@ -378,7 +378,7 @@ def link_clicked(request, link_name, link_subject, link_url):
 
 @login_required(login_url='login')
 def product_view(request):
-    products  = Link.objects.all()
+    products = Link.objects.all()
 
     context = {
         "products":products,
@@ -441,10 +441,8 @@ def export_users_to_excel(request):
         'Created At': [user.created_at.replace(tzinfo=None) for user in users],
     }
     df = pd.DataFrame(data)
-
     # Create a BytesIO object to store the Excel file
     excel_file = BytesIO()
-
     # Export the DataFrame to an Excel file
     df.to_excel(excel_file, index=False)
     excel_file.seek(0)
@@ -454,12 +452,24 @@ def export_users_to_excel(request):
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
     response['Content-Disposition'] = 'attachment; filename="users.xlsx"'
-
     # Write the Excel file content to the response
     response.write(excel_file.getvalue())
-
     return response
 
 
 def task_detail(request):
     return None
+
+@login_required(login_url='login')
+def request_view(request):
+    if request.method == 'POST':
+        name = request.POST['email']
+        print(name)
+
+        """ Write a function to send email """ ""
+
+        return redirect('master_home')
+
+
+
+    return render(request,'smartemail/create_review_request.html')
