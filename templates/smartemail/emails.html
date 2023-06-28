@@ -27,7 +27,7 @@
                     <div class="card  border-white shadow-lg p-3 my-3 bg-body rounded">
                         <div class="card-body">
                             <h5 class="mb-3">Email Subject: <span class="card-title text-black fw-bolder ">{{  email.subject }}</span></h5>
-                            <p class="card-text text-black">{{ email.body}}</p>
+                            <p class="card-text text-black">{{ email.body |safe}}</p>
                             <p>Email Type: <span class="card-text text-black fw-bolder">{{ email.emailtype}}</span> </p>
                             <p>Created on: <span class="card-text text-black fw-bolder">{{ email.created_at}}</span> </p>
                             <p>Last updated: <span class="card-text text-black fw-bolder">{{ email.updated_at}}</span> </p>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ELG-Firearms Smart Form</title>
+    <style>
+        body {
+            font-family: 'Roboto, Sans-serif', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: rgba(188,186,190,255)!important;
+
+
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+        .mt-5 {
+            margin-top: 5rem;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .align-items-center {
+            align-items: center;
+        }
+        .mt-3 {
+            margin-top: 3rem;
+        }
+        .d-inline {
+            display: inline;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .fw-bold {
+            font-weight: bold;
+        }
+        .fs-9 {
+            font-size: 0.9rem;
+        }
+        .color-oranges {
+            border-color: orangered;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        .card {
+            width: 15rem;
+            margin-right: 1rem;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+        .card-body {
+            padding: 1rem;
+        }
+        .card-title {
+            margin-top: 0;
+        }
+        .card-text {
+            font-weight: bold;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: orangered;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+        .btn:hover {
+            background-color: red;
+        }
+        hr {
+            border: 1px solid orangered;
+        }
+        .new4 {
+            border: none;
+            border-top: 1px solid orangered;
+            margin: 20px auto;
+            clear: both;
+        }
+        p {
+            {#text-align: center;#}
+        }
+        .text-center {
+            text-align: center !important;
+        }
+        strong {
+            font-weight: bold;
+        }
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 767px) {
+            .card {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="container m-2">
+
+        <div class="row">
+            <div class="col-8 mx-auto align-items-center">
+                <img class="img-fluid" src="{{ email_head }}"  alt="ELG-Firearms Header">
+
+                <h3 class="text-center">{{ emails.subject}}</h3>
+                <hr class="new4">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2 ">
+                <p class="">{{ emails.body |safe }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            {% if emails.product1_image %}
+                <div class="card">
+                    <img src="{{ picture_urls.0}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ emails.product1_name |safe}}</h5>
+                        <p class="card-text">{{ emails.product1_description|safe}}</p>
+                        <a href="{{ emails.product1_link }}" class="btn">Buy</a>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if emails.product2_image %}
+                <div class="card">
+                    <img src="{{ picture_urls.1}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ emails.product2_name |safe}}</h5>
+                        <p class="card-text">{{ emails.product2_description |safe }}</p>
+                        <a href="{{ emails.product2_link }}" class="btn">Buy</a>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if emails.product3_image %}
+                <div class="card">
+                    <img src="{{ picture_urls.2}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ emails.product3_name |safe}}</h5>
+                        <p class="card-text">{{ emails.product3_description |safe}}</p>
+                        <a href="{{ emails.product3_link }}" class="btn">Buy</a>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if emails.product4_image %}
+                <div class="card">
+                    <img src="{{ ppicture_urls.3 }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ emails.product4_name |safe }}</h5>
+                        <p class="card-text">{{ emails.product4_description |safe }}</p>
+                        <a href="{{ emails.product4_link }}" class="btn">Buy</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-8 mx-auto align-items-center mt-3">
+                <img class="mx-auto" src="{{ email_signature }}" alt="ELG-Firearms Footer">
+                <hr class="new4">
+
+                <p class="text-center">Copyright © 2022 ELG Firearms Service & Instruction, All rights reserved.
+                    You are receiving this email because you opted in via our website.
+                    <strong>Our mailing address is:</strong>
+                    ELG Firearms Service & Instruction
+                    1227 Burnside Ave
+                    Elg Firearms Service & Instruction
+                    East Hartford, CT 06108-7400
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

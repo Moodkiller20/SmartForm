@@ -5,7 +5,6 @@ from django.shortcuts import render, redirect
 from smart_accountApp.forms import smartFormRegistrationForm
 
 
-# Create your views here.
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -38,8 +37,6 @@ def register_view(request):
     else:
         form = smartFormRegistrationForm()
     return render(request, 'account/register.html', {'form': form})
-
-
 def loggout_view(request):
     logout(request)
     return render(request, 'account/login.html')

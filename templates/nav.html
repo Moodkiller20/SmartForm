@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     {% comment %} My CSS {% endcomment %}
     <link   rel="stylesheet"  type="text/css" href="{% static 'css/base.css' %}"/>
+    <link   rel="stylesheet"  type="text/css" href="{% static 'css/floatingBtn.css' %}"/>
 </head>
 <body>
 
@@ -87,6 +88,24 @@
         </div>
     </div>
 </nav>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<div class="floating-container">
+    <div class="floating-button"><a href="{% url 'request_review' %}">Review</a> </div>
+    <div class="element-container">
+
+
+
+        {#        <span class="float-element">#}
+        {#      <i class="material-icons">email#}
+        {#</i>#}
+        {#    </span>#}
+
+        {#        <span class="float-element">#}
+        {#      <i class="material-icons">chat</i>#}
+        {#        </span>#}
+    </div>
+</div>
 
 {% block navbar %}
 

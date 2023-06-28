@@ -1,24 +1,19 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from io import BytesIO
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.db.models import Sum
+from django.db.models import Q
 from SmartForm import settings
-from scheduler.send_email import buildEmail
+from scheduler.send_email import buildEmail, request_review
 from smart_emailApp.forms import *
-from smart_formApp.forms import UserForm
 from smart_formApp.models import User
 from smart_emailApp.models import *
 
-
-# Create your views here.
 @login_required(login_url='login')
-def home_view(request):
-    from django.db.models import Sum
-    from django.db.models import Q
-    from django_apscheduler.models import DjangoJob, DjangoJobExecution
 
+def home_view(request):
+    # buildEmail(15,15)
     members_count = User.objects.count()
     today = datetime.today()
     seven_days_ago = today - timedelta(days=7)
@@ -51,13 +46,11 @@ def home_view(request):
 
     return render(request, "smartemail/master_home.html", context)
 
-
 def member_view(request):
     limit = 100
     users = User.objects.all()[:limit]
     number_of_users = User.objects.all().count()
     return render(request, 'smartemail/member_view.html', {'users': users,'number_of_users':number_of_users})
-
 @login_required(login_url='login')
 def edit_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
@@ -103,7 +96,7 @@ def create_email(request):
                 instance.image = image
             instance.save()
             form.save_m2m()
-            return redirect('master_home')
+            return redirect('view_emails')
     else:
         form = CreateEmailForm()
 
@@ -141,7 +134,7 @@ def create_task(request):
 
             instance.save()
 
-            return redirect('master_home')
+            return redirect('view_task')
 
             # Process the email task here
     else:
@@ -180,7 +173,7 @@ def edit_task(request, id):
             intance.recipients = members_list
 
         intance.save()
-        return redirect('master_home')
+        return redirect('view_tasks')
         # Process the email task here
 
     list_info = [
@@ -228,22 +221,46 @@ def email_view(request):
     return render(request, "smartemail/emails.html", context)
 
 @login_required(login_url='login')
+
 def email_template_view(request, id):
+
+    from urllib.parse import urlparse
+
+    current_url = request.build_absolute_uri()
+    parsed_url = urlparse(current_url)
+    domain_name = parsed_url.netloc
+    
     emails = Emails.objects.get(id=id)
+    email_assets = Assets.objects.all()
+    
+    email_head = email_assets.get(asset_name="ELG_Header").image_asset
+    email_signature = email_assets.get(asset_name="Email_signature").image_asset
+
+    email_head = f"http://{domain_name}/media/{email_head}"
+    email_signature = f"http://{domain_name}/media/{email_signature}"
+    
+    
     print(emails)
     context = {}
     template_name = None
+
+
     if emails.emailtype == "Store News":
-        context = {'receiver': "ELG-Firearms Member",
-                   'emails': emails}
-        template_name = "storenewsAttach.html"
+        context = {
+            'receiver': "ELG-Firearms Member",
+            'emails': emails,
+            'email_head':email_head,
+            'email_signature':email_signature,
+        }
+        template_name = "storesnews.html"
 
     elif emails.emailtype == "Promotional":
-
         context = {'receiver': "ELG-Firearms Member",
-                   "emails": emails
+                   "emails": emails,
+                   'email_head': email_head,
+                   'email_signature': email_signature,
                    }
-        template_name = "onsalesAttach.html"
+        template_name = "new4items.html"
 
     elif emails.emailtype == "Seasonal Sales":
         context = {
@@ -309,7 +326,6 @@ def delete_email(request, id):
     }
 
     return render(request, 'smartemail/confirm_delete.html', context)
-
 @login_required(login_url='login')
 def task_view(request):
     tasks = EmailTask.objects.all()
@@ -327,10 +343,6 @@ def task_search(request):
     print(tasks)
     context = {'tasks': tasks}
     return render(request, 'smartemail/tasks.html', context)
-
-@login_required(login_url='login')
-def task_detail(request, id):
-    return None
 
 @login_required(login_url='login')
 def delete_task(request, id):
@@ -366,7 +378,7 @@ def link_clicked(request, link_name, link_subject, link_url):
 
 @login_required(login_url='login')
 def product_view(request):
-    products  = Link.objects.all()
+    products = Link.objects.all()
 
     context = {
         "products":products,
@@ -429,10 +441,8 @@ def export_users_to_excel(request):
         'Created At': [user.created_at.replace(tzinfo=None) for user in users],
     }
     df = pd.DataFrame(data)
-
     # Create a BytesIO object to store the Excel file
     excel_file = BytesIO()
-
     # Export the DataFrame to an Excel file
     df.to_excel(excel_file, index=False)
     excel_file.seek(0)
@@ -442,8 +452,22 @@ def export_users_to_excel(request):
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
     response['Content-Disposition'] = 'attachment; filename="users.xlsx"'
-
     # Write the Excel file content to the response
     response.write(excel_file.getvalue())
-
     return response
+def task_detail(request):
+    return None
+@login_required(login_url='login')
+def request_view(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        first_name = request.POST['first_name']
+        if email:
+            request_review(email,first_name)
+            return redirect('master_home')
+        else:
+            return render(request, 'smartemail/create_review_request.html')
+
+    else:
+        return render(request, 'smartemail/create_review_request.html')
+

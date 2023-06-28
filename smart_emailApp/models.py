@@ -1,5 +1,5 @@
 from django.db import models
-
+from ckeditor.fields import RichTextField
 
 class Emails(models.Model):
     email_type = (
@@ -9,28 +9,29 @@ class Emails(models.Model):
     )
 
     subject = models.CharField(max_length=100)
-    body = models.TextField(max_length=1000)
+    #body = models.TextField(max_length=1000)
+    body = RichTextField(blank=True, null=True)
     emailtype = models.CharField(max_length=50, choices=email_type, null=True)
 
     # Image attachment, name and Description
     product1_image = models.ImageField(upload_to="email_imageAttachment/", null=True, blank=True, default=None)
     product1_name = models.CharField(max_length=60, null=True, blank=True)
-    product1_description = models.CharField(max_length=200, null=True, blank=True)
+    product1_description = RichTextField(blank=True, null=True)
     product1_link = models.URLField(max_length=100, null=True, blank=True)
 
     product2_image = models.ImageField(upload_to="email_imageAttachment/", null=True, blank=True, default=None)
     product2_name = models.CharField(max_length=60, null=True, blank=True)
-    product2_description = models.CharField(max_length=200, null=True, blank=True)
+    product2_description = RichTextField(blank=True, null=True)
     product2_link = models.URLField(max_length=100, null=True, blank=True)
 
     product3_image = models.ImageField(upload_to="email_imageAttachment/", null=True, blank=True, default=None)
     product3_name = models.CharField(max_length=60, null=True, blank=True)
-    product3_description = models.CharField(max_length=200, null=True, blank=True)
+    product3_description = RichTextField(blank=True, null=True)
     product3_link = models.URLField(max_length=100, null=True, blank=True)
 
     product4_image = models.ImageField(upload_to="email_imageAttachment/", null=True, blank=True, default=None)
     product4_name = models.CharField(max_length=60, null=True, blank=True)
-    product4_description = models.CharField(max_length=200, null=True, blank=True)
+    product4_description = RichTextField(blank=True, null=True)
     product4_link = models.URLField(max_length=100, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -45,7 +46,6 @@ class Emails(models.Model):
 
         # save to database
         super(Emails, self).save(*args, **kwargs)
-
 
 class EmailTask(models.Model):
     task_type = (
@@ -70,7 +70,7 @@ class EmailTask(models.Model):
 
     task_name = models.CharField(max_length=200)
     task_occurence = models.CharField(max_length=50, choices=task_type, null=True, blank=True)
-    task_description = models.TextField(max_length=200)
+    task_description = RichTextField(blank=True, null=True)
     recipients = models.CharField(max_length=1000)
 
     sender = models.EmailField()
@@ -90,8 +90,6 @@ class EmailTask(models.Model):
 
     def __str__(self):
         return f'{self.task_name} || {self.task_occurence} || {self.status}'
-
-
 
 class MyJobModel(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
@@ -116,9 +114,6 @@ class ErrorReport(models.Model):
     def __str__(self):
         return self.name
 
-
-
-
 class Link(models.Model):
     name = models.CharField(max_length=255)
     subject = models.CharField(max_length=255)
@@ -137,3 +132,9 @@ class Link(models.Model):
 
     def __str__(self):
         return f'Product name: {self.name} || {self.url} || views:  {self.views} '
+
+class Assets(models.Model):
+    image_asset = models.ImageField(upload_to="email_assets/images/", null=True, blank=True, default=None)
+    asset_name = models.CharField(max_length=60, null=True, blank=True)
+    def __str__(self):
+        return self.asset_name
