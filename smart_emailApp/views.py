@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum
 from django.db.models import Q
 from SmartForm import settings
-from scheduler.send_email import buildEmail
+from scheduler.send_email import buildEmail, request_review
 from smart_emailApp.forms import *
 from smart_formApp.models import User
 from smart_emailApp.models import *
@@ -13,7 +13,7 @@ from smart_emailApp.models import *
 @login_required(login_url='login')
 
 def home_view(request):
-    buildEmail(15,15)
+    # buildEmail(15,15)
     members_count = User.objects.count()
     today = datetime.today()
     seven_days_ago = today - timedelta(days=7)
@@ -455,21 +455,19 @@ def export_users_to_excel(request):
     # Write the Excel file content to the response
     response.write(excel_file.getvalue())
     return response
-
-
 def task_detail(request):
     return None
-
 @login_required(login_url='login')
 def request_view(request):
     if request.method == 'POST':
-        name = request.POST['email']
-        print(name)
+        email = request.POST['email']
+        first_name = request.POST['first_name']
+        if email:
+            request_review(email,first_name)
+            return redirect('master_home')
+        else:
+            return render(request, 'smartemail/create_review_request.html')
 
-        """ Write a function to send email """ ""
+    else:
+        return render(request, 'smartemail/create_review_request.html')
 
-        return redirect('master_home')
-
-
-
-    return render(request,'smartemail/create_review_request.html')

@@ -60,7 +60,29 @@ def welcome_email(email, first_name, last_name):
     except:
         return False
 
+def request_review(email, first_name):
+    try:
+        # send a confirmation mail
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [email,]
 
+        subject, from_email, to = 'ELG-Community', email_from, email
+
+        context = {'first_name':first_name,
+
+                   }
+
+        message_html = render_to_string('email_templates/request_review.html', context)
+        email_message = EmailMessage(subject, '', from_email, recipient_list)
+        email_message.content_subtype = "html"
+        email_message.body = message_html
+        email_message.send()
+
+        print("Email was Sent!!################################")
+
+        return True
+    except:
+        return False
 
 from django.core.mail import EmailMessage
 from django.conf import settings
