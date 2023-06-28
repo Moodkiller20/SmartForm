@@ -20,7 +20,6 @@ urlpatterns = [
                   path('search_email', views.email_search, name='search_email'),
                   path('view_template/<int:id>', views.email_template_view, name='view_template'),
 
-
                   path('edit_task/<int:id>', views.edit_task, name='edit_task'),
                   path('search_task', views.task_search, name='search_task'),
                   path('view_tasks', views.task_view, name='view_tasks'),
@@ -33,5 +32,8 @@ urlpatterns = [
                   path('master/link_clicked/<str:link_name>/<str:link_subject>/<path:link_url>/', views.link_clicked, name='link_clicked'),
                   path('product_stats', views.product_view, name='product_stats'),
                   path('search_product', views.product_search, name='search_product'),
+
+                  # Request User to leave review.
+                  path('request_review', views.request_view, name ='request_review'),
 
               ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

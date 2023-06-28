@@ -1,0 +1,31 @@
+{% extends "nav.html" %}
+{% load static %}
+
+
+{% block navbar %}
+    <div class="container m-3 bg-light text-black mx-auto border rounded-3 shadow">
+
+        <div class="row">
+            <div class="col mx-auto p-4 m-4">
+
+                <h4 class="text-center"> Request User to leave Reviews on Google</h4>
+                <form method="POST" action="{% url 'request_review' %}">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">First name</label>
+                        <input type="text" class="form-control" name="first_name" id="exampleFormControlInput1" placeholder="First name">
+                        <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                        <input type="text" class="form-control" name="email" id="exampleFormControlInput1" placeholder="name@example.com">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Primary</button>
+
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

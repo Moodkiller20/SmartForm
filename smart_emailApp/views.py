@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum
 from django.db.models import Q
 from SmartForm import settings
-from scheduler.send_email import buildEmail
+from scheduler.send_email import buildEmail, request_review
 from smart_emailApp.forms import *
 from smart_formApp.models import User
 from smart_emailApp.models import *
@@ -13,7 +13,7 @@ from smart_emailApp.models import *
 @login_required(login_url='login')
 
 def home_view(request):
-    buildEmail(15,15)
+    # buildEmail(15,15)
     members_count = User.objects.count()
     today = datetime.today()
     seven_days_ago = today - timedelta(days=7)
@@ -378,7 +378,7 @@ def link_clicked(request, link_name, link_subject, link_url):
 
 @login_required(login_url='login')
 def product_view(request):
-    products  = Link.objects.all()
+    products = Link.objects.all()
 
     context = {
         "products":products,
@@ -441,10 +441,8 @@ def export_users_to_excel(request):
         'Created At': [user.created_at.replace(tzinfo=None) for user in users],
     }
     df = pd.DataFrame(data)
-
     # Create a BytesIO object to store the Excel file
     excel_file = BytesIO()
-
     # Export the DataFrame to an Excel file
     df.to_excel(excel_file, index=False)
     excel_file.seek(0)
@@ -454,12 +452,22 @@ def export_users_to_excel(request):
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
     response['Content-Disposition'] = 'attachment; filename="users.xlsx"'
-
     # Write the Excel file content to the response
     response.write(excel_file.getvalue())
-
     return response
-
-
 def task_detail(request):
     return None
+@login_required(login_url='login')
+def request_view(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        first_name = request.POST['first_name']
+        if email:
+            request_review(email,first_name)
+            return redirect('master_home')
+        else:
+            return render(request, 'smartemail/create_review_request.html')
+
+    else:
+        return render(request, 'smartemail/create_review_request.html')
+
