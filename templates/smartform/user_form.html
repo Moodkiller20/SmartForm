@@ -44,22 +44,28 @@
     </style>
 
 
-<div class="container">
-<!-- Content -->
-    <div class="content">
-        <h1>
-            <img src="{% static 'images/ELG_Firearms_Logo.png' %}" alt="Logo" class="logo">
-            ELG-Firearms Smart Form
-        </h1>
-        <p>Be up to date on events and deals.</p>
-        <form method="POST" action="{% url 'user_form' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-danger">Submit <i class="fa-solid fa-bullseye"></i></button>
-        </form>
-    </div>
+    <div class="container">
+        <!-- Content -->
+        <div class="row">
+            <div class="col mx-auto">
+                <div class="content">
+                    <h1>
+                        <img src="{% static 'images/ELG_Firearms_Logo.png' %}" alt="Logo" class="logo">
+                        ELG-COMMUNITY
+                    </h1>
+                    <p>ELG Firearms Service and Instruction</p>
+                    <form method="POST" action="{% url 'user_form' %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-danger">Submit <i class="fa-solid fa-bullseye"></i></button>
 
-</div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 
 
 

@@ -16,7 +16,7 @@ def login_view(request):
             login(request, user)
             return redirect('master_home')
         else:
-
+            print("user not found")
 
             return redirect('login')
 

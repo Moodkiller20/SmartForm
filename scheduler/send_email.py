@@ -1,18 +1,6 @@
-import os
-import django
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "SmartForm.settings")
-
-# initialize Django
-django.setup()
-
-
 from SmartForm import settings
 from smart_emailApp.models import Emails, EmailTask
-
 import ast
-
-
 
 def send_once_email( email):
     # send a confirmation mail
